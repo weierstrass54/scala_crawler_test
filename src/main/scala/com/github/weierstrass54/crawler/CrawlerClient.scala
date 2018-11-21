@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
 import com.typesafe.scalalogging.Logger
+import spray.json.DefaultJsonProtocol._
 import spray.json.JsValue
 
 import scala.collection.mutable
@@ -22,7 +23,7 @@ object CrawlerClient extends CrawlerApp {
   def crawl(url: List[String]): Map[String, String] = crawl(url.toArray)
 
   def crawl(url: Vector[JsValue]): Map[String, String] =
-    crawl(url.map(v => v.toString).toArray)
+    crawl(url.map(_.convertTo[String]).toArray)
 
   private def crawl(url: Array[String]): Map[String, String] = {
     val result = mutable.Map[String, String]()
